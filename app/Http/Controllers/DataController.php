@@ -82,6 +82,15 @@ class DataController extends Controller
     public function categoriesList(Request $request)
     {
         $Categories = \DB::table('categories')->get();
+        // $Categories = null;
+        if($Categories == null)
+        {
+           return response()->json([
+            'sucess' => false,
+            'message' => 'no categories found',
+            'data' => $Categories
+        ]);   
+        }
         return response()->json([
             'sucess' => true,
             'message' => 'categories list',
