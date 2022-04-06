@@ -22,3 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/user', [App\Http\Controllers\DataController::class, 'UserCheck'])->name('user');
 Route::post('/selectcategories', [App\Http\Controllers\DataController::class, 'SelectCategories'])->name('selectcategories');
 Route::get('/categoriesList', [App\Http\Controllers\DataController::class, 'categoriesList'])->name('categoriesList');
+Route::post('/ContactDesigner', [App\Http\Controllers\user\ContactDesignerController::class, 'ContactDesigner'])->name('ContactDesigner');
+Route::post('/messagedesigner', [App\Http\Controllers\user\ChatController::class, 'MessageToDesigner'])->name('messagedesigner');
+

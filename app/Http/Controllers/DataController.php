@@ -26,23 +26,38 @@ class DataController extends Controller
         $UserCheck = \DB::table('registrations')->where('user_id', $user_id)->first();
         if($UserCheck == null)
         {
+            $validator = Validator::make($request->all(), [
+            'user_type' => 'required'
+            ]);
+            if ($validator->fails()) {
+            return response()->json([
+                'sucess' => false,
+                'message' => 'validation errors',
+                'error' => $validator->errors(),
+            ]);
+         }
+
         	$user_type = $request->user_type;
         	$user = new Registration;
             $user->user_id = $request->user_id;
             $user->user_type = $request->user_type;
             $user->save();
             $categories = \DB::table('user_categories')->where('user_id', $user_id)->select('category_id')->get();
+            $data = \DB::table('registrations')->where('user_id', $user_id)->get();
             return response()->json([
             	'sucess' => true,
             	'message' => 'New User Registered Sucessfully',
             	'categories' =>  $categories,
+                'data' => $data
             ]);
         }else{
             $categories = \DB::table('user_categories')->where('user_id', $user_id)->select('category_id')->get();
+            $data = \DB::table('registrations')->where('user_id', $user_id)->get();
             return response()->json([
                 'sucess' => true,
                 'message' => 'user data',
                 'categories' =>  $categories,  
+                'data' => $data,
         ]);    
         }
         
@@ -71,10 +86,12 @@ class DataController extends Controller
             }
             $user_id = $request->user_id;
             $categories = \DB::table('user_categories')->where('user_id', $user_id)->select('category_id')->get();
+            // $data = \DB::table('user_categories')->where('user_id', $user_id)->get();
             return response()->json([
                 'sucess' => true,
                 'message' => 'user data',
-                'categories' =>  $categories,  
+                'categories' =>  $categories, 
+                // 'data' => $data 
         ]);  
 
 
